@@ -1,0 +1,191 @@
+:root {
+  color-scheme: dark;
+  --bg: #111315;
+  --panel: #1b1f22;
+  --panel2: #22272b;
+  --text: #f4f6f7;
+  --muted: #a8b0b7;
+  --line: #343b41;
+  --accent: #2fd37d;
+  --warn: #f1b44c;
+  --bad: #ff6575;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+}
+
+.shell {
+  width: min(920px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.15;
+}
+
+.sub {
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.status, .chip {
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  color: var(--muted);
+  padding: 10px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.status.ok { color: var(--accent); }
+.status.bad { color: var(--bad); }
+
+.panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.firmware {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.file {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actions.four {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.actions.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+button {
+  border: 1px solid #3a8f60;
+  background: #20834d;
+  color: white;
+  border-radius: 6px;
+  min-height: 48px;
+  padding: 0 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.progressBox {
+  margin-top: 18px;
+}
+
+.progressTop {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.bar {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #0d0f10;
+  border: 1px solid var(--line);
+}
+
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: var(--accent);
+  transition: width .15s linear;
+}
+
+.compact h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+ol {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.logPanel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.logTitle {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+pre {
+  margin: 0;
+  min-height: 220px;
+  max-height: 360px;
+  overflow: auto;
+  padding: 16px 18px;
+  background: #0d0f10;
+  color: #d7dee4;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 720px) {
+  .hero, .firmware { align-items: flex-start; flex-direction: column; }
+  .actions, .actions.four, .actions.three { grid-template-columns: 1fr; }
+  h1 { font-size: 30px; }
+}
