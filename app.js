@@ -41,7 +41,7 @@ function parseHex(hexText) {
   for (const rawLine of hexText.trim().split(/\r?\n/)) {
     const line = rawLine.trim();
     if (!line) continue;
-    if (line[0] !== ":") throw new Error("Invalid HEX file");
+    if (line[0] !== ":") throw new Error("\u56fa\u4ef6 HEX \u683c\u5f0f\u9519\u8bef");
 
     const len = parseInt(line.slice(1, 3), 16);
     const addr = parseInt(line.slice(3, 7), 16);
@@ -57,7 +57,7 @@ function parseHex(hexText) {
 
     const checksum = parseInt(line.slice(9 + len * 2, 11 + len * 2), 16);
     if (((sum + checksum) & 0xff) !== 0) {
-      throw new Error(`HEX checksum failed: ${line}`);
+      throw new Error(`HEX \u6821\u9a8c\u5931\u8d25: ${line}`);
     }
 
     if (type === 0x00) {
@@ -85,11 +85,11 @@ function parseHex(hexText) {
 
 async function loadFirmware() {
   const response = await fetch("./firmware.hex", { cache: "no-store" });
-  if (!response.ok) throw new Error("Cannot load firmware.hex");
+  if (!response.ok) throw new Error("\u65e0\u6cd5\u52a0\u8f7d firmware.hex");
   const text = await response.text();
   firmware = parseHex(text);
   firmwareInfo.textContent = `${firmware.maxAddress} bytes`;
-  log(`Firmware loaded: ${firmware.maxAddress} bytes`);
+  log(`\u56fa\u4ef6\u5df2\u52a0\u8f7d: ${firmware.maxAddress} bytes`);
 }
 
 async function safelyClosePort(port) {
@@ -98,14 +98,14 @@ async function safelyClosePort(port) {
 }
 
 async function touch1200(port) {
-  log("Opening selected COM at 1200 baud...");
+  log("\u6b63\u5728\u4ee5 1200 baud \u6253\u5f00\u5f53\u524d\u4e32\u53e3...");
   await port.open({ baudRate: BAUD_TOUCH });
   try {
     await port.setSignals({ dataTerminalReady: false, requestToSend: false });
   } catch {}
   await sleep(250);
   await safelyClosePort(port);
-  log("Reset command sent. Wait until Windows reconnects the bootloader COM.");
+  log("\u5df2\u53d1\u9001\u91cd\u542f\u547d\u4ee4\u3002\u8bf7\u7b49\u5f85 Windows \u8bc6\u522b\u65b0\u7684\u5237\u673a\u4e32\u53e3\u3002");
 }
 
 class Avr109 {
@@ -136,12 +136,12 @@ class Avr109 {
     if (this.readBuffer.length > 0) return this.readBuffer.shift();
 
     const timeout = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error("Bootloader read timeout")), timeoutMs);
+      setTimeout(() => reject(new Error("\u8bfb\u53d6\u5237\u673a\u6a21\u5f0f\u8d85\u65f6")), timeoutMs);
     });
 
     const result = await Promise.race([this.reader.read(), timeout]);
     if (result.done || !result.value || result.value.length === 0) {
-      throw new Error("Bootloader COM disconnected");
+      throw new Error("\u5237\u673a\u4e32\u53e3\u5df2\u65ad\u5f00");
     }
 
     const bytes = Array.from(result.value);
@@ -153,7 +153,7 @@ class Avr109 {
   async expectOk(context) {
     const got = await this.readByte();
     if (got !== 0x0d) {
-      throw new Error(`${context} failed, response 0x${got.toString(16)}`);
+      throw new Error(`${context} \u5931\u8d25, \u8fd4\u56de 0x${got.toString(16)}`);
     }
   }
 
@@ -171,7 +171,7 @@ class Avr109 {
       (wordAddress >> 8) & 0xff,
       wordAddress & 0xff
     ]);
-    await this.expectOk("Set address");
+    await this.expectOk("\u8bbe\u7f6e\u5199\u5165\u5730\u5740");
   }
 
   async writePage(byteAddress, page) {
@@ -185,7 +185,7 @@ class Avr109 {
     packet.set(page, 4);
 
     await this.write(packet);
-    await this.expectOk(`Write page 0x${byteAddress.toString(16)}`);
+    await this.expectOk(`\u5199\u5165\u9875 0x${byteAddress.toString(16)}`);
   }
 
   async leaveBootloader() {
@@ -200,10 +200,10 @@ connectBtn.addEventListener("click", async () => {
   try {
     normalPort = await navigator.serial.requestPort({});
     bootBtn.disabled = false;
-    log("Normal COM selected.");
+    log("\u5df2\u9009\u62e9\u8bbe\u5907\u5f53\u524d\u4e32\u53e3\u3002");
   }
   catch (error) {
-    log(`Port selection cancelled or failed: ${error.message}`);
+    log(`\u4e32\u53e3\u9009\u62e9\u5df2\u53d6\u6d88\u6216\u5931\u8d25: ${error.message}`);
   }
 });
 
@@ -211,17 +211,17 @@ bootBtn.addEventListener("click", async () => {
   if (!normalPort) return;
   bootBtn.disabled = true;
   connectBtn.disabled = true;
-  setProgress(0, "Entering bootloader");
+  setProgress(0, "\u6b63\u5728\u8fdb\u5165\u5237\u673a\u6a21\u5f0f");
 
   try {
     await touch1200(normalPort);
     normalPort = null;
     bootSelectBtn.disabled = false;
-    setProgress(0, "Select bootloader COM");
-    log("Now click step 3 and select the new bootloader COM port.");
+    setProgress(0, "\u8bf7\u9009\u62e9\u5237\u673a\u4e32\u53e3");
+    log("\u73b0\u5728\u70b9\u51fb\u7b2c 3 \u6b65\uff0c\u9009\u62e9\u65b0\u51fa\u73b0\u7684\u5237\u673a\u4e32\u53e3\u3002");
   }
   catch (error) {
-    log(`Bootloader reset failed: ${error.message}`);
+    log(`\u8fdb\u5165\u5237\u673a\u6a21\u5f0f\u5931\u8d25: ${error.message}`);
     connectBtn.disabled = false;
     bootBtn.disabled = false;
   }
@@ -230,11 +230,11 @@ bootBtn.addEventListener("click", async () => {
 bootSelectBtn.addEventListener("click", async () => {
   try {
     bootPort = await navigator.serial.requestPort({});
-    log("Bootloader COM selected. Flashing now...");
+    log("\u5df2\u9009\u62e9\u5237\u673a\u4e32\u53e3\uff0c\u6b63\u5728\u5199\u5165\u56fa\u4ef6...");
     await flashFirmware();
   }
   catch (error) {
-    log(`Bootloader COM selection cancelled or failed: ${error.message}`);
+    log(`\u5237\u673a\u4e32\u53e3\u9009\u62e9\u5df2\u53d6\u6d88\u6216\u5931\u8d25: ${error.message}`);
   }
 });
 
@@ -242,7 +242,7 @@ async function flashFirmware() {
   if (!bootPort || !firmware) return;
 
   bootSelectBtn.disabled = true;
-  setProgress(0, "Opening bootloader");
+  setProgress(0, "\u6b63\u5728\u6253\u5f00\u5237\u673a\u4e32\u53e3");
 
   const avr = new Avr109(bootPort);
 
@@ -253,7 +253,7 @@ async function flashFirmware() {
       const id = await avr.getStringCommand("S", 7);
       log(`Bootloader ID: ${id}`);
     } catch {
-      log("Could not read bootloader ID. Continuing.");
+      log("\u672a\u8bfb\u53d6\u5230 Bootloader ID\uff0c\u7ee7\u7eed\u5199\u5165\u3002");
     }
 
     const pages = firmware.size / PAGE_SIZE;
@@ -261,18 +261,18 @@ async function flashFirmware() {
       const address = pageIndex * PAGE_SIZE;
       const page = firmware.bytes.slice(address, address + PAGE_SIZE);
       await avr.writePage(address, page);
-      setProgress((pageIndex + 1) * 100 / pages, `Writing ${pageIndex + 1}/${pages}`);
+      setProgress((pageIndex + 1) * 100 / pages, `\u5199\u5165\u4e2d ${pageIndex + 1}/${pages}`);
     }
 
     await avr.leaveBootloader();
-    setProgress(100, "Flash complete");
-    log("Flash complete. Unplug and plug the USB cable again.");
+    setProgress(100, "\u5237\u673a\u5b8c\u6210");
+    log("\u5237\u673a\u5b8c\u6210\u3002\u8bf7\u91cd\u65b0\u63d2\u62d4 USB\u3002");
   }
   catch (error) {
-    setProgress(0, "Flash failed");
-    log(`Flash failed: ${error.message}`);
+    setProgress(0, "\u5237\u673a\u5931\u8d25");
+    log(`\u5237\u673a\u5931\u8d25: ${error.message}`);
     bootSelectBtn.disabled = false;
-    log("If this says failed to open serial port, the bootloader timed out. Repeat step 1 to 3 faster.");
+    log("\u5982\u679c\u63d0\u793a\u6253\u5f00\u4e32\u53e3\u5931\u8d25\uff0c\u901a\u5e38\u662f Bootloader \u8d85\u65f6\u3002\u8bf7\u66f4\u5feb\u5730\u91cd\u590d\u7b2c 1 \u5230\u7b2c 3 \u6b65\u3002");
   }
   finally {
     try { await avr.close(); } catch {}
@@ -281,24 +281,24 @@ async function flashFirmware() {
 
 (async function init() {
   if (!("serial" in navigator)) {
-    supportStatus.textContent = "Web Serial not supported";
+    supportStatus.textContent = "\u5f53\u524d\u6d4f\u89c8\u5668\u4e0d\u652f\u6301 Web Serial";
     supportStatus.className = "status bad";
     connectBtn.disabled = true;
     bootBtn.disabled = true;
     bootSelectBtn.disabled = true;
-    log("Use desktop Chrome or Edge.");
+    log("\u8bf7\u4f7f\u7528\u7535\u8111\u7248 Chrome \u6216 Edge \u6d4f\u89c8\u5668\u3002");
     return;
   }
 
-  supportStatus.textContent = "Web Serial supported";
+  supportStatus.textContent = "\u6d4f\u89c8\u5668\u652f\u6301 Web Serial";
   supportStatus.className = "status ok";
 
   try {
     await loadFirmware();
   }
   catch (error) {
-    firmwareInfo.textContent = "Load failed";
+    firmwareInfo.textContent = "\u52a0\u8f7d\u5931\u8d25";
     connectBtn.disabled = true;
-    log(`Firmware load failed: ${error.message}`);
+    log(`\u56fa\u4ef6\u52a0\u8f7d\u5931\u8d25: ${error.message}`);
   }
 })();

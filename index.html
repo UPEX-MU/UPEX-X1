@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MU-Panel Apex V1 Web Flasher</title>
+  <title>MU-Panel Apex V1 &#32593;&#39029;&#21047;&#26426;&#24037;&#20855;</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -11,30 +11,30 @@
     <section class="hero">
       <div>
         <p class="eyebrow">MU-Panel Apex V1</p>
-        <h1>Web Firmware Flasher</h1>
-        <p class="sub">For Pro Micro / ATmega32U4 boards. Use desktop Chrome or Edge.</p>
+        <h1>&#32593;&#39029;&#21047;&#26426;&#24037;&#20855;</h1>
+        <p class="sub">&#36866;&#29992;&#20110; Pro Micro / ATmega32U4 &#35774;&#22791;&#12290;&#35831;&#20351;&#29992;&#30005;&#33041;&#29256; Chrome &#25110; Edge &#27983;&#35272;&#22120;&#12290;</p>
       </div>
-      <div class="status" id="supportStatus">Checking browser...</div>
+      <div class="status" id="supportStatus">&#27491;&#22312;&#26816;&#26597;&#27983;&#35272;&#22120;...</div>
     </section>
 
     <section class="panel">
       <div class="firmware">
         <div>
-          <div class="label">Built-in firmware</div>
+          <div class="label">&#20869;&#32622;&#22266;&#20214;</div>
           <div class="file">firmware.hex</div>
         </div>
-        <div class="chip" id="firmwareInfo">Not loaded</div>
+        <div class="chip" id="firmwareInfo">&#26410;&#21152;&#36733;</div>
       </div>
 
       <div class="actions three">
-        <button id="connectBtn" type="button">1. Select normal COM</button>
-        <button id="bootBtn" type="button" disabled>2. Enter bootloader</button>
-        <button id="bootSelectBtn" type="button" disabled>3. Select bootloader COM and flash</button>
+        <button id="connectBtn" type="button">1. &#36873;&#25321;&#35774;&#22791;&#20018;&#21475;</button>
+        <button id="bootBtn" type="button" disabled>2. &#36827;&#20837;&#21047;&#26426;&#27169;&#24335;</button>
+        <button id="bootSelectBtn" type="button" disabled>3. &#36873;&#25321;&#21047;&#26426;&#20018;&#21475;&#24182;&#20889;&#20837;</button>
       </div>
 
       <div class="progressBox">
         <div class="progressTop">
-          <span id="progressText">Waiting</span>
+          <span id="progressText">&#31561;&#24453;&#25805;&#20316;</span>
           <span id="progressPercent">0%</span>
         </div>
         <div class="bar"><div id="progressBar"></div></div>
@@ -42,17 +42,17 @@
     </section>
 
     <section class="panel compact">
-      <h2>How to use</h2>
+      <h2>&#20351;&#29992;&#27493;&#39588;</h2>
       <ol>
-        <li>Plug in the device.</li>
-        <li>Click step 1 and select the current device COM port.</li>
-        <li>Click step 2. The device will reset and reconnect as bootloader.</li>
-        <li>Immediately click step 3 and select the bootloader COM port. Flashing starts automatically.</li>
+        <li>&#25554;&#20837;&#35774;&#22791;&#12290;</li>
+        <li>&#28857;&#20987;&#31532; 1 &#27493;&#65292;&#36873;&#25321;&#24403;&#21069;&#35774;&#22791;&#20018;&#21475;&#12290;</li>
+        <li>&#28857;&#20987;&#31532; 2 &#27493;&#65292;&#35774;&#22791;&#20250;&#37325;&#21551;&#24182;&#36827;&#20837;&#21047;&#26426;&#27169;&#24335;&#12290;</li>
+        <li>&#35774;&#22791;&#37325;&#36830;&#21518;&#65292;&#31435;&#21051;&#28857;&#20987;&#31532; 3 &#27493;&#65292;&#36873;&#25321;&#26032;&#20986;&#29616;&#30340;&#21047;&#26426;&#20018;&#21475;&#65292;&#32593;&#39029;&#20250;&#33258;&#21160;&#20889;&#20837;&#22266;&#20214;&#12290;</li>
       </ol>
     </section>
 
     <section class="panel logPanel">
-      <div class="logTitle">Log</div>
+      <div class="logTitle">&#21047;&#26426;&#26085;&#24535;</div>
       <pre id="log"></pre>
     </section>
   </main>
