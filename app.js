@@ -1,6 +1,9 @@
 const BAUD_TOUCH = 1200;
 const BAUD_BOOTLOADER = 57600;
 const PAGE_SIZE = 128;
+const FIRMWARE_VERSION = "2026.10.08";
+const FIRMWARE_PROTOCOL = "0x83";
+const FIRMWARE_SHA256 = "86A77BE549C924A64AC455764A61C9BA23D0A264B1B86CAA5B9D998588137945";
 
 let normalPort = null;
 let bootPort = null;
@@ -86,10 +89,17 @@ function parseHex(hexText) {
 async function loadFirmware() {
   const response = await fetch("./firmware.hex", { cache: "no-store" });
   if (!response.ok) throw new Error("\u65e0\u6cd5\u52a0\u8f7d firmware.hex");
-  const text = await response.text();
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const actualHash = Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, "0")).join("").toUpperCase();
+  if (actualHash !== FIRMWARE_SHA256) {
+    throw new Error(`\u56fa\u4ef6 SHA-256 \u6821\u9a8c\u5931\u8d25: ${actualHash}`);
+  }
+  const text = new TextDecoder("utf-8").decode(bytes);
   firmware = parseHex(text);
-  firmwareInfo.textContent = `${firmware.maxAddress} bytes`;
-  log(`\u56fa\u4ef6\u5df2\u52a0\u8f7d: ${firmware.maxAddress} bytes`);
+  firmwareInfo.textContent = `${firmware.maxAddress} bytes \u00b7 ${FIRMWARE_VERSION}`;
+  log(`\u56fa\u4ef6\u5df2\u52a0\u8f7d: ${firmware.maxAddress} bytes, protocol ${FIRMWARE_PROTOCOL}`);
+  log(`SHA-256: ${FIRMWARE_SHA256}`);
 }
 
 async function safelyClosePort(port) {
