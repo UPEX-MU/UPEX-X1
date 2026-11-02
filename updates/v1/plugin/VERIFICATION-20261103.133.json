@@ -1,0 +1,33 @@
+﻿{
+    "Status":  "PASS",
+    "PluginVersion":  "2026.11.03.133",
+    "UpdaterVersion":  "2026.11.2.1",
+    "EngineChecks":  95847,
+    "NativeUiChecks":  1728,
+    "OfflineInstallerChecks":  29,
+    "OnlineInstallerChecks":  30,
+    "PluginSha256":  "A8CA1FFA66A93220BBB020A1AC917034D66D43A36EBD2A9D1F71C9C396EAF687",
+    "OnlineInstallerSha256":  "DB4B38663C45FCA6AA0CAC171D2C0EAA4E3DC40831A4966729D47A230D26867E",
+    "OnlineInstallerBytes":  31404032,
+    "CurrentCaptureSamples":  2816,
+    "RestoredPreviouslyBlankEvents":  12,
+    "CurrentCaptureSupportedCues":  59,
+    "HistoricalSamples":  2374,
+    "ExistingPreviewsByteIdentical":  66,
+    "PreviewCount":  75,
+    "PhysicalSequence":  [
+                             "40m",
+                             "left5",
+                             "60m"
+                         ],
+    "PhysicalSequenceUserConfirmed":  true,
+    "EveryNewSymbolPhysicallyValidated":  false,
+    "AllStagesAndVehiclesValidated":  false,
+    "GameAdapterVersion":  "0.4.0",
+    "GameAdapterUnchanged":  true,
+    "CustomerSettingsPreserved":  true,
+    "FirmwareCatalogEntriesUnchanged":  true,
+    "FirmwareFlashed":  false,
+    "OldUpdaterLimitBytes":  33554432,
+    "Scope":  "Plugin release only; same payload as the locally installed and targeted user-tested build"
+}
